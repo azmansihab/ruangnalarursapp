@@ -1,62 +1,49 @@
 import streamlit as st
 
-# Konfigurasi Halaman
+# 1. Konfigurasi Halaman
 st.set_page_config(page_title="Ruangnalarurs App", layout="wide")
 
-# --- CUSTOM CSS (Final Fix) ---
+# 2. CSS Magic untuk Memindahkan Navigasi ke Bawah Logo
 st.markdown("""
     <style>
-    /* 1. Memaksa logo tetap di paling atas (mengatasi margin default Streamlit) */
+    /* Menggeser menu navigasi otomatis ke bawah agar ada ruang untuk logo */
     [data-testid="stSidebarNav"] {
-        padding-top: 20px !important;
+        padding-top: 120px !important;
     }
     
-    /* 2. Styling Teks 'Powered by' agar berada di posisi paling atas */
-    .powered-by-container {
+    /* Container untuk Logo dan Powered By yang akan ditempel di paling atas sidebar */
+    .custom-sidebar-header {
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
         text-align: center;
-        margin-top: -60px; /* Menarik ke atas agar di atas menu */
-        margin-bottom: 10px;
+        z-index: 1000;
     }
-    
-    .powered-by-text {
+
+    .powered-by {
         font-size: 11px;
         color: #808495;
+        margin-bottom: 5px;
         font-family: sans-serif;
     }
 
-    /* 3. Membuat Logo kecil dan di tengah */
-    .centered-logo {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    .logo-img {
         width: 100px;
-    }
-
-    /* 4. Memastikan menu navigasi bawaan (yang minimalis) berada di bawah logo */
-    [data-testid="stSidebarNav"] ul {
-        padding-top: 10px;
     }
     </style>
     """, unsafe_allow_html=True)
 
-# --- SIDEBAR CONTENT ---
-with st.sidebar:
-    # Bagian Atas: Logo & Powered by (Disuntikkan via HTML agar posisi stabil di atas)
-    st.markdown(f"""
-        <div class="powered-by-container">
-            <p class="powered-by-text">Powered by</p>
-            <img src="https://raw.githubusercontent.com/[YOUR_USERNAME]/[YOUR_REPO]/main/assets/logo_ruangnalar.png" class="centered-logo">
-        </div>
+# 3. Menyuntikkan Logo di Atas Menu Navigasi
+# Ganti URL gambar dengan link GitHub atau file lokal assets/logo_ruangnalar.png
+st.sidebar.markdown(f"""
+    <div class="custom-sidebar-header">
+        <p class="powered-by">Powered by</p>
+        <img src="https://raw.githubusercontent.com/[YOUR_USERNAME]/[YOUR_REPO]/main/assets/logo_ruangnalar.png" class="logo-img">
+    </div>
     """, unsafe_allow_html=True)
-    
-    # Catatan: Karena Anda ingin menu minimalis bawaan, 
-    # kita tidak menggunakan st.radio lagi.
-    # Menu akan otomatis muncul jika file diletakkan di folder /pages
-    
-    st.markdown("---") # Garis pemisah tipis
 
-# --- LOGIKA HALAMAN UTAMA ---
-# (Karena kita menggunakan folder /pages, file ini otomatis jadi 'Homepage')
+# 4. Konten Halaman Utama
 st.markdown("""
     <div style='text-align: center; margin-top: 150px;'>
         <h1 style='font-size: 45px; font-weight: 800;'>WELCOME TO<br>RUANGNALARURSAPP</h1>
