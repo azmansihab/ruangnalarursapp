@@ -1,59 +1,48 @@
 import streamlit as st
-import base64
 
+# 1. Konfigurasi Halaman
 st.set_page_config(page_title="Ruangnalarurs App", layout="wide")
 
-# Fungsi untuk mengubah gambar lokal ke Base64 agar bisa dibaca CSS
-def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
-
-# Load logo Anda
-# Pastikan path file benar sesuai folder Anda
-logo_base64 = get_base64_of_bin_file('assets/logo_ruangnalar.png')
-
-# --- CSS MAGIC: Meletakkan Logo di Atas Menu ---
-st.markdown(f"""
+# 2. CSS untuk Memaksa Logo di Atas Menu Sidebar
+st.markdown("""
     <style>
-    /* 1. Memberi ruang kosong di atas menu navigasi asli */
-    [data-testid="stSidebarNav"] {{
+    /* Memberi ruang di atas menu navigasi otomatis */
+    [data-testid="stSidebarNav"] {
         padding-top: 130px !important;
-    }}
-
-    /* 2. Membuat container logo melayang di area merah yang Anda tandai */
-    .custom-header {{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%; /* Menyesuaikan lebar sidebar */
-        padding: 20px 10px;
-        background-color: #262730; /* Warna gelap sidebar */
-        z-index: 999;
-        text-align: center;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }}
-
-    .powered-by {{
-        font-size: 10px;
-        color: #808495;
-        margin-bottom: 2px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }}
-
-    .logo-img {{
-        width: 100px;
-    }}
-    </style>
+    }
     
-    <div class="custom-header">
-        <p class="powered-by">Powered by</p>
-        <img class="logo-img" src="data:image/png;base64,{logo_base64}">
-    </div>
+    /* Menempatkan logo dan teks di area kosong tersebut */
+    [data-testid="stSidebarNav"]::before {
+        content: "Powered by";
+        margin-left: 20px;
+        margin-top: 20px;
+        font-size: 11px;
+        color: #808495;
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Mengatur Logo agar muncul di atas navigasi */
+    [data-testid="stSidebarNav"]::after {
+        content: "";
+        background-image: url("https://raw.githubusercontent.com/[USER]/[REPO]/main/assets/logo_ruangnalar.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: block;
+        width: 120px;
+        height: 100px;
+        position: absolute;
+        top: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    </style>
     """, unsafe_allow_html=True)
 
-# --- KONTEN HALAMAN UTAMA ---
+# 3. Konten Utama
 st.markdown("""
     <div style='text-align: center; margin-top: 150px;'>
         <h1 style='font-size: 45px; font-weight: 800;'>WELCOME TO<br>RUANGNALARURSAPP</h1>
