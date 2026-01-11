@@ -14,18 +14,18 @@ def get_base64(bin_file):
 path_logo = "assets/logo_ruangnalar.png"
 logo_css = f"data:image/png;base64,{get_base64(path_logo)}" if os.path.exists(path_logo) else ""
 
-# 3. CSS Custom: Menghilangkan Gap, Memunculkan Ikon & Homepage, serta Center Teks
+# 3. CSS Custom: Navigasi Ramping (Slim) & Center
 st.markdown(f"""
     <style>
-    /* --- 1. MENGATUR AREA ATAS (NO GAP) --- */
+    /* Mengatur area header sidebar (Powered by + Logo) */
     [data-testid="stSidebarNav"] {{
-        padding-top: 100px !important; /* Ruang untuk logo */
+        padding-top: 100px !important;
     }}
     
     [data-testid="stSidebarNav"]::before {{
         content: "Powered by";
         position: absolute;
-        top: 15px; /* Mepet ke atas */
+        top: 15px;
         left: 50%;
         transform: translateX(-50%);
         font-size: 10px;
@@ -40,38 +40,45 @@ st.markdown(f"""
         background-repeat: no-repeat;
         background-position: center;
         display: block;
-        width: 110px;
-        height: 70px;
+        width: 100px;
+        height: 60px;
         position: absolute;
-        top: 30px; /* Tepat di bawah Powered by */
+        top: 30px;
         left: 50%;
         transform: translateX(-50%);
     }}
 
-    /* --- 2. MERAPIKAN MENU: CENTER & TAMPILKAN IKON --- */
-    /* Mengatur list menu agar center */
+    /* --- MENGATUR MENU MENJADI RAMPING (SLIM) --- */
+    /* Menghilangkan padding kiri pada list menu */
     [data-testid="stSidebarNav"] ul {{
-        padding-left: 0px;
-        margin-top: 10px;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
     }}
 
-    /* Mengetengahkan item menu tanpa menghilangkan ikon */
+    /* Mengecilkan ukuran baris menu agar ramping */
+    [data-testid="stSidebarNav"] ul li {{
+        padding: 0px 10px !important; /* Jarak samping menu ke dinding sidebar */
+    }}
+
     [data-testid="stSidebarNav"] ul li a {{
-        justify-content: center !important; 
-        padding: 8px 10px !important;
-        gap: 10px; /* Jarak antara ikon dan teks */
+        display: flex !important;
+        justify-content: center !important; /* Teks & Ikon tetap di tengah */
+        align-items: center !important;
+        padding: 4px 10px !important; /* Padding atas-bawah kecil agar ramping */
+        gap: 8px !important;
+        border-radius: 6px !important;
+        margin-bottom: 2px !important;
     }}
 
-    /* Memastikan teks menu berada di tengah */
+    /* Memastikan teks menu berukuran pas dan center */
     [data-testid="stSidebarNav"] ul li a span {{
-        text-align: center;
-        display: inline-block;
+        font-size: 14px !important;
+        text-align: center !important;
     }}
 
-    /* Memberi warna aktif yang lebih jelas pada menu yang dipilih */
+    /* Memberi highlight minimalis pada menu aktif */
     [data-testid="stSidebarNav"] ul li a[aria-current="page"] {{
         background-color: rgba(255, 255, 255, 0.1) !important;
-        border-radius: 8px;
     }}
     </style>
     """, unsafe_allow_html=True)
