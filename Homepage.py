@@ -5,7 +5,7 @@ import os
 # 1. Konfigurasi Halaman
 st.set_page_config(page_title="Ruangnalarurs App", layout="wide")
 
-# 2. Fungsi Base64 (Tetap dipertahankan agar logo muncul)
+# 2. Fungsi Base64 untuk Logo
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
@@ -14,28 +14,25 @@ def get_base64(bin_file):
 path_logo = "assets/logo_ruangnalar.png"
 logo_css = f"data:image/png;base64,{get_base64(path_logo)}" if os.path.exists(path_logo) else ""
 
-# 3. CSS Refined: Menghilangkan Gap & Teks Menu Center
+# 3. CSS Custom: Menghilangkan Gap, Memunculkan Ikon & Homepage, serta Center Teks
 st.markdown(f"""
     <style>
-    /* Mengurangi gap di paling atas sidebar */
+    /* --- 1. MENGATUR AREA ATAS (NO GAP) --- */
     [data-testid="stSidebarNav"] {{
-        padding-top: 110px !important;
+        padding-top: 100px !important; /* Ruang untuk logo */
     }}
     
-    /* Memposisikan teks "Powered by" lebih rapat ke atas */
     [data-testid="stSidebarNav"]::before {{
         content: "Powered by";
         position: absolute;
-        top: 10px; /* Dikurangi agar lebih naik */
+        top: 15px; /* Mepet ke atas */
         left: 50%;
         transform: translateX(-50%);
         font-size: 10px;
         color: #808495;
         font-family: sans-serif;
-        letter-spacing: 0.5px;
     }}
 
-    /* Memposisikan Logo lebih rapat di bawah tulisan Powered by */
     [data-testid="stSidebarNav"]::after {{
         content: "";
         background-image: url("{logo_css}");
@@ -43,34 +40,43 @@ st.markdown(f"""
         background-repeat: no-repeat;
         background-position: center;
         display: block;
-        width: 100px; /* Ukuran disesuaikan agar proporsional */
+        width: 110px;
         height: 70px;
         position: absolute;
-        top: 25px; /* Menaikkan posisi logo */
+        top: 30px; /* Tepat di bawah Powered by */
         left: 50%;
         transform: translateX(-50%);
     }}
 
-    /* --- MEMBUAT TEKS MENU MENJADI CENTER --- */
+    /* --- 2. MERAPIKAN MENU: CENTER & TAMPILKAN IKON --- */
+    /* Mengatur list menu agar center */
     [data-testid="stSidebarNav"] ul {{
         padding-left: 0px;
-        text-align: center;
+        margin-top: 10px;
     }}
 
+    /* Mengetengahkan item menu tanpa menghilangkan ikon */
     [data-testid="stSidebarNav"] ul li a {{
-        justify-content: center !important; /* Mengetengahkan konten menu */
-        text-align: center !important;
-        margin-left: 0 !important;
+        justify-content: center !important; 
+        padding: 8px 10px !important;
+        gap: 10px; /* Jarak antara ikon dan teks */
     }}
-    
-    /* Menghilangkan margin ikon agar teks benar-benar di tengah */
-    [data-testid="stSidebarNav"] ul li a span:first-child {{
-        display: none; 
+
+    /* Memastikan teks menu berada di tengah */
+    [data-testid="stSidebarNav"] ul li a span {{
+        text-align: center;
+        display: inline-block;
+    }}
+
+    /* Memberi warna aktif yang lebih jelas pada menu yang dipilih */
+    [data-testid="stSidebarNav"] ul li a[aria-current="page"] {{
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border-radius: 8px;
     }}
     </style>
     """, unsafe_allow_html=True)
 
-# 4. Konten Utama
+# 4. Konten Halaman Utama
 st.markdown("""
     <div style='text-align: center; margin-top: 150px;'>
         <h1 style='font-size: 45px; font-weight: 800;'>WELCOME TO<br>RUANGNALARURSAPP</h1>
