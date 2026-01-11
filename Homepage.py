@@ -1,48 +1,66 @@
 import streamlit as st
+import base64
+import os
 
 # 1. Konfigurasi Halaman
 st.set_page_config(page_title="Ruangnalarurs App", layout="wide")
 
-# 2. CSS untuk Memaksa Logo di Atas Menu Sidebar
-st.markdown("""
+# 2. Fungsi untuk Konversi Gambar ke Base64 (Agar Logo Muncul)
+def get_base64(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+# Path logo - Pastikan folder 'assets' dan file 'logo_ruangnalar.png' ada
+path_logo = "assets/logo_ruangnalar.png"
+
+if os.path.exists(path_logo):
+    bin_str = get_base64(path_logo)
+    logo_css = f"data:image/png;base64,{bin_str}"
+else:
+    # Fallback jika file tidak ditemukan (untuk testing)
+    logo_css = ""
+    st.sidebar.error("File logo tidak ditemukan di folder assets/")
+
+# 3. CSS untuk Memasukkan Logo & Teks ke Sidebar
+st.markdown(f"""
     <style>
     /* Memberi ruang di atas menu navigasi otomatis */
-    [data-testid="stSidebarNav"] {
+    [data-testid="stSidebarNav"] {{
         padding-top: 130px !important;
-    }
+    }}
     
-    /* Menempatkan logo dan teks di area kosong tersebut */
-    [data-testid="stSidebarNav"]::before {
+    /* Menaruh teks "Powered by" */
+    [data-testid="stSidebarNav"]::before {{
         content: "Powered by";
-        margin-left: 20px;
-        margin-top: 20px;
-        font-size: 11px;
-        color: #808495;
         position: absolute;
-        top: 10px;
+        top: 20px;
         left: 50%;
         transform: translateX(-50%);
-    }
+        font-size: 11px;
+        color: #808495;
+        font-family: sans-serif;
+    }}
 
-    /* Mengatur Logo agar muncul di atas navigasi */
-    [data-testid="stSidebarNav"]::after {
+    /* Menaruh Logo di area yang sudah dikosongkan */
+    [data-testid="stSidebarNav"]::after {{
         content: "";
-        background-image: url("https://raw.githubusercontent.com/[USER]/[REPO]/main/assets/logo_ruangnalar.png");
+        background-image: url("{logo_css}");
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
         display: block;
         width: 120px;
-        height: 100px;
+        height: 80px;
         position: absolute;
-        top: 35px;
+        top: 40px;
         left: 50%;
         transform: translateX(-50%);
-    }
+    }}
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Konten Utama
+# 4. Konten Utama
 st.markdown("""
     <div style='text-align: center; margin-top: 150px;'>
         <h1 style='font-size: 45px; font-weight: 800;'>WELCOME TO<br>RUANGNALARURSAPP</h1>
