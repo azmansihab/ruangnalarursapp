@@ -5,44 +5,37 @@ import os
 # 1. Konfigurasi Halaman
 st.set_page_config(page_title="Ruangnalarurs App", layout="wide")
 
-# 2. Fungsi untuk Konversi Gambar ke Base64 (Agar Logo Muncul)
+# 2. Fungsi Base64 (Tetap dipertahankan agar logo muncul)
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-# Path logo - Pastikan folder 'assets' dan file 'logo_ruangnalar.png' ada
 path_logo = "assets/logo_ruangnalar.png"
+logo_css = f"data:image/png;base64,{get_base64(path_logo)}" if os.path.exists(path_logo) else ""
 
-if os.path.exists(path_logo):
-    bin_str = get_base64(path_logo)
-    logo_css = f"data:image/png;base64,{bin_str}"
-else:
-    # Fallback jika file tidak ditemukan (untuk testing)
-    logo_css = ""
-    st.sidebar.error("File logo tidak ditemukan di folder assets/")
-
-# 3. CSS untuk Memasukkan Logo & Teks ke Sidebar
+# 3. CSS Refined: Menghilangkan Gap & Teks Menu Center
 st.markdown(f"""
     <style>
-    /* Memberi ruang di atas menu navigasi otomatis */
+    /* Mengurangi gap di paling atas sidebar */
     [data-testid="stSidebarNav"] {{
-        padding-top: 130px !important;
+        padding-top: 110px !important;
     }}
     
-    /* Menaruh teks "Powered by" */
+    /* Memposisikan teks "Powered by" lebih rapat ke atas */
     [data-testid="stSidebarNav"]::before {{
         content: "Powered by";
         position: absolute;
-        top: 20px;
+        top: 10px; /* Dikurangi agar lebih naik */
         left: 50%;
         transform: translateX(-50%);
-        font-size: 11px;
+        font-size: 10px;
         color: #808495;
         font-family: sans-serif;
+        letter-spacing: 0.5px;
     }}
 
-    /* Menaruh Logo di area yang sudah dikosongkan */
+    /* Memposisikan Logo lebih rapat di bawah tulisan Powered by */
     [data-testid="stSidebarNav"]::after {{
         content: "";
         background-image: url("{logo_css}");
@@ -50,12 +43,29 @@ st.markdown(f"""
         background-repeat: no-repeat;
         background-position: center;
         display: block;
-        width: 120px;
-        height: 80px;
+        width: 100px; /* Ukuran disesuaikan agar proporsional */
+        height: 70px;
         position: absolute;
-        top: 40px;
+        top: 25px; /* Menaikkan posisi logo */
         left: 50%;
         transform: translateX(-50%);
+    }}
+
+    /* --- MEMBUAT TEKS MENU MENJADI CENTER --- */
+    [data-testid="stSidebarNav"] ul {{
+        padding-left: 0px;
+        text-align: center;
+    }}
+
+    [data-testid="stSidebarNav"] ul li a {{
+        justify-content: center !important; /* Mengetengahkan konten menu */
+        text-align: center !important;
+        margin-left: 0 !important;
+    }}
+    
+    /* Menghilangkan margin ikon agar teks benar-benar di tengah */
+    [data-testid="stSidebarNav"] ul li a span:first-child {{
+        display: none; 
     }}
     </style>
     """, unsafe_allow_html=True)
