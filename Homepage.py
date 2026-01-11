@@ -39,7 +39,7 @@ st.markdown("""
 st.sidebar.markdown(f"""
     <div class="custom-sidebar-header">
         <p class="powered-by">Powered by</p>
-        <img src="https://raw.githubusercontent.com/[YOUR_USERNAME]/[YOUR_REPO]/main/assets/logo_ruangnalar.png" class="logo-img">
+        <img src="assets/logo_ruangnalar.png" class="logo-img">
     </div>
     """, unsafe_allow_html=True)
 
